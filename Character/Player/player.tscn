@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cxf0h1ad5wqnr"]
+
+[ext_resource type="Script" uid="uid://cenaa5mjjep0r" path="res://Character/Player/player.gd" id="1_vnk41"]
+[ext_resource type="Texture2D" uid="uid://tgi6i2if38w5" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0085.png" id="2_2h1g1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vonw3"]
+size = Vector2(16, 15)
+
+[node name="MainCharacter" type="CharacterBody2D" unique_id=1750692713]
+collision_mask = 3
+script = ExtResource("1_vnk41")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1723723675]
+texture_filter = 1
+texture = ExtResource("2_2h1g1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1704919153]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_vonw3")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2048776329]
+zoom = Vector2(2, 2)
