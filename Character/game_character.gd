@@ -17,6 +17,10 @@ signal died(character: GameCharacter)
 @export var health_bar_background: Color = Color(0.15, 0.15, 0.15, 0.9)
 @export var health_bar_fill: Color = Color(0.2, 0.9, 0.2, 0.95)
 @export var health_bar_border: Color = Color(0, 0, 0, 1)
+@export var movement_force: float = 1200.0
+@export var max_speed: float = 100.0
+@export var mass: float = 1.0
+@export var braking_force: float = 1600.0
 
 var health: int
 
@@ -79,3 +83,24 @@ func heal(amount: int) -> void:
 func die() -> void:
 	emit_signal("died", self)
 	queue_free()
+
+
+func apply_movement_force(direction: Vector2, delta: float, force_scale: float = 1.0) -> void:
+	if direction == Vector2.ZERO:
+		return
+
+	var safe_mass = max(0.001, mass)
+	var acceleration = direction.normalized() * ((movement_force * force_scale) / safe_mass)
+	velocity += acceleration * delta
+
+	if velocity.length() > max_speed:
+		velocity = velocity.normalized() * max_speed
+
+
+func apply_braking_force(delta: float, braking_scale: float = 1.0) -> void:
+	if velocity == Vector2.ZERO:
+		return
+
+	var safe_mass = max(0.001, mass)
+	var deceleration = (braking_force * braking_scale) / safe_mass
+	velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)

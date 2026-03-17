@@ -1,25 +1,26 @@
 extends GameCharacter
 class_name Player
 
-var speed = 200
-const sprint_multiplier = 2
+@export var speed: float = 100.0
+@export var sprint_multiplier: float = 2.0
 
 func _ready() -> void:
 	super._ready()
 	team = GameCharacter.Team.ALLY
 	
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	# Get the input direction vector
 	var direction = Input.get_vector("left", "right", "up", "down")
+	max_speed = speed
 
-	# Set the character's velocity
+	# Apply movement force toward desired direction.
 	if direction != Vector2.ZERO:
-		# Normalize to ensure consistent speed in all directions
-		velocity = direction.normalized() * speed 
+		var force_scale := 1.0
 		if Input.is_action_pressed("sprint"):
-			velocity *= sprint_multiplier
+			force_scale = sprint_multiplier
+		apply_movement_force(direction, delta, force_scale)
 	else:
-		velocity = Vector2.ZERO
+		apply_braking_force(delta)
 
 	# Move the character
 	move_and_slide()

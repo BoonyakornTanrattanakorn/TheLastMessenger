@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://baa56otvctkpf" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0086.png" id="2_mc7jo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dwduf"]
-radius = 50.0
+radius = 150.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f2txt"]
 size = Vector2(16, 16)
