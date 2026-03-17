@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://cbtaan8qp5mma" path="res://Character/NPC/TestEnemy/test_enemy.gd" id="1_kgatg"]
 [ext_resource type="Texture2D" uid="uid://c3qgc3evjhsu2" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0088.png" id="2_kgatg"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_dwduf"]
+radius = 50.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f2txt"]
 size = Vector2(16, 16)
 
@@ -10,6 +13,11 @@ size = Vector2(16, 16)
 collision_mask = 3
 script = ExtResource("1_kgatg")
 metadata/_custom_type_script = "uid://cr11ihcgauis5"
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=1028893758]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=1440167386]
+shape = SubResource("CircleShape2D_dwduf")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=993148042]
 texture_filter = 1
