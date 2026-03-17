@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://blql2bt3xdgvc" path="res://level.gd" id="1_0b4ue"]
 [ext_resource type="Texture2D" uid="uid://lmc3oitdswfs" path="res://assets/kenney_tiny-dungeon/Tilemap/tilemap_packed.png" id="1_oi3di"]
 [ext_resource type="PackedScene" uid="uid://cxf0h1ad5wqnr" path="res://Character/Player/player.tscn" id="2_vonw3"]
-[ext_resource type="PackedScene" uid="uid://pr8udhhtd6tt" path="res://Character/NPC/TestEnemy/test_enemy.tscn" id="3_oi3di"]
+[ext_resource type="PackedScene" uid="uid://pr8udhhtd6tt" path="res://Character/NPC/TestEnemy/test_ally.tscn" id="3_oi3di"]
+[ext_resource type="PackedScene" uid="uid://hbou44pwf7rd" path="res://Character/NPC/TestAlly/test_enemy.tscn" id="5_f2txt"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0b4ue"]
 texture = ExtResource("1_oi3di")
@@ -198,11 +199,29 @@ tile_set = SubResource("TileSet_f2txt")
 
 [node name="Player" parent="." unique_id=1750692713 instance=ExtResource("2_vonw3")]
 
-[node name="TestEnemy" parent="." unique_id=433755612 instance=ExtResource("3_oi3di")]
-position = Vector2(88, 27)
+[node name="TestAlly" parent="." unique_id=433755612 instance=ExtResource("3_oi3di")]
+position = Vector2(-118, -55)
 
-[node name="TestEnemy2" parent="." unique_id=1927422113 instance=ExtResource("3_oi3di")]
-position = Vector2(172, -80)
+[node name="TestAlly2" parent="." unique_id=980084771 instance=ExtResource("3_oi3di")]
+position = Vector2(-84, 8)
 
-[node name="TestEnemy3" parent="." unique_id=210384576 instance=ExtResource("3_oi3di")]
-position = Vector2(-141, 90)
+[node name="TestAlly3" parent="." unique_id=510543000 instance=ExtResource("3_oi3di")]
+position = Vector2(-168, 19)
+
+[node name="TestAlly4" parent="." unique_id=1656345164 instance=ExtResource("3_oi3di")]
+position = Vector2(-110, 57)
+
+[node name="TestEnemy" parent="." unique_id=1653714226 instance=ExtResource("5_f2txt")]
+position = Vector2(80, -86)
+
+[node name="TestEnemy2" parent="." unique_id=40909123 instance=ExtResource("5_f2txt")]
+position = Vector2(70, 124)
+
+[node name="TestEnemy3" parent="." unique_id=1864912005 instance=ExtResource("5_f2txt")]
+position = Vector2(122, 87)
+
+[node name="TestEnemy4" parent="." unique_id=2012709147 instance=ExtResource("5_f2txt")]
+position = Vector2(94, -24)
+
+[node name="TestEnemy5" parent="." unique_id=1806066478 instance=ExtResource("5_f2txt")]
+position = Vector2(129, 19)

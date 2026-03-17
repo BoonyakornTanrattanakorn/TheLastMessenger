@@ -4,6 +4,10 @@ class_name Player
 var speed = 200
 const sprint_multiplier = 2
 
+func _ready() -> void:
+	super._ready()
+	team = GameCharacter.Team.ALLY
+	
 func _physics_process(delta):
 	# Get the input direction vector
 	var direction = Input.get_vector("left", "right", "up", "down")

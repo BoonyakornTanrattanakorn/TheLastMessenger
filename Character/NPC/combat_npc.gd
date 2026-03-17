@@ -1,5 +1,5 @@
 extends GameCharacter
-class_name TestNPC
+class_name CombatNPC
 
 enum State {
 	PATROL,
@@ -20,11 +20,6 @@ var _attack_cooldown_left: float = 0.0
 var _last_known_position: Vector2 = Vector2.ZERO
 var _has_last_known_position: bool = false
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	super._ready()
-	team = GameCharacter.Team.ENEMY
-
 
 func _physics_process(delta: float) -> void:
 	_attack_cooldown_left = max(0.0, _attack_cooldown_left - delta)
@@ -44,6 +39,10 @@ func _physics_process(delta: float) -> void:
 
 func _run_patrol_state() -> void:
 	velocity = Vector2.ZERO
+	_update_target_to_closest_enemy()
+	if _has_valid_target():
+		state = State.MOVE_TO_ENEMY
+		return
 
 	for body in detection_area.get_overlapping_bodies():
 		if body is GameCharacter:
@@ -57,6 +56,7 @@ func _run_patrol_state() -> void:
 
 
 func _run_move_to_enemy_state() -> void:
+	_update_target_to_closest_enemy()
 	if not _has_valid_target():
 		_move_to_last_known_position_or_patrol()
 		return
@@ -80,6 +80,7 @@ func _run_move_to_enemy_state() -> void:
 
 
 func _run_fight_enemy_state() -> void:
+	_update_target_to_closest_enemy()
 	if not _has_valid_target():
 		_move_to_last_known_position_or_patrol()
 		return
@@ -146,3 +147,40 @@ func _move_to_last_known_position_or_patrol() -> void:
 	var dir := (_last_known_position - position).normalized()
 	velocity = dir * speed
 	state = State.MOVE_TO_ENEMY
+
+
+func _update_target_to_closest_enemy() -> void:
+	var closest_enemy := _find_closest_enemy_in_detection_area()
+	if closest_enemy == null:
+		return
+
+	if not _has_valid_target():
+		target = closest_enemy
+		_last_known_position = target.position
+		_has_last_known_position = true
+		return
+
+	var current_distance_sq := position.distance_squared_to(target.position)
+	var closest_distance_sq := position.distance_squared_to(closest_enemy.position)
+	if closest_enemy != target and closest_distance_sq < current_distance_sq:
+		target = closest_enemy
+		_last_known_position = target.position
+		_has_last_known_position = true
+
+
+func _find_closest_enemy_in_detection_area() -> GameCharacter:
+	var closest_enemy: GameCharacter = null
+	var closest_distance_sq := INF
+
+	for body in detection_area.get_overlapping_bodies():
+		if body is GameCharacter:
+			var candidate := body as GameCharacter
+			if not _is_valid_enemy(candidate):
+				continue
+
+			var candidate_distance_sq := position.distance_squared_to(candidate.position)
+			if closest_enemy == null or candidate_distance_sq < closest_distance_sq:
+				closest_enemy = candidate
+				closest_distance_sq = candidate_distance_sq
+
+	return closest_enemy
