@@ -15,6 +15,7 @@ script = ExtResource("1_kgatg")
 metadata/_custom_type_script = "uid://cr11ihcgauis5"
 
 [node name="DetectionArea" type="Area2D" parent="." unique_id=1028893758]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=1440167386]
 shape = SubResource("CircleShape2D_dwduf")

@@ -198,30 +198,52 @@ tile_map_data = PackedByteArray("AADr//T/AAAAAAAAAADr//X/AAAAAAAAAADr//b/AAAAAAA
 tile_set = SubResource("TileSet_f2txt")
 
 [node name="Player" parent="." unique_id=1750692713 instance=ExtResource("2_vonw3")]
+position = Vector2(-226, 23)
 
 [node name="TestAlly" parent="." unique_id=433755612 instance=ExtResource("3_oi3di")]
-position = Vector2(-118, -55)
+position = Vector2(-89, -26)
 
-[node name="TestAlly2" parent="." unique_id=980084771 instance=ExtResource("3_oi3di")]
-position = Vector2(-84, 8)
+[node name="TestAlly2" parent="." unique_id=872614865 instance=ExtResource("3_oi3di")]
+position = Vector2(-89, -9)
 
-[node name="TestAlly3" parent="." unique_id=510543000 instance=ExtResource("3_oi3di")]
-position = Vector2(-168, 19)
+[node name="TestAlly3" parent="." unique_id=1604466354 instance=ExtResource("3_oi3di")]
+position = Vector2(-89, 11)
 
-[node name="TestAlly4" parent="." unique_id=1656345164 instance=ExtResource("3_oi3di")]
-position = Vector2(-110, 57)
+[node name="TestAlly4" parent="." unique_id=1220822772 instance=ExtResource("3_oi3di")]
+position = Vector2(-89, 28)
+
+[node name="TestAlly5" parent="." unique_id=1854278713 instance=ExtResource("3_oi3di")]
+position = Vector2(-72, -26)
+
+[node name="TestAlly6" parent="." unique_id=760105346 instance=ExtResource("3_oi3di")]
+position = Vector2(-72, -9)
+
+[node name="TestAlly7" parent="." unique_id=459619054 instance=ExtResource("3_oi3di")]
+position = Vector2(-72, 11)
+
+[node name="TestAlly8" parent="." unique_id=2069553546 instance=ExtResource("3_oi3di")]
+position = Vector2(-72, 28)
 
 [node name="TestEnemy" parent="." unique_id=1653714226 instance=ExtResource("5_f2txt")]
-position = Vector2(80, -86)
+position = Vector2(-54, -26)
 
-[node name="TestEnemy2" parent="." unique_id=40909123 instance=ExtResource("5_f2txt")]
-position = Vector2(70, 124)
+[node name="TestEnemy2" parent="." unique_id=764292799 instance=ExtResource("5_f2txt")]
+position = Vector2(-54, -9)
 
-[node name="TestEnemy3" parent="." unique_id=1864912005 instance=ExtResource("5_f2txt")]
-position = Vector2(122, 87)
+[node name="TestEnemy3" parent="." unique_id=900010653 instance=ExtResource("5_f2txt")]
+position = Vector2(-54, 8)
 
-[node name="TestEnemy4" parent="." unique_id=2012709147 instance=ExtResource("5_f2txt")]
-position = Vector2(94, -24)
+[node name="TestEnemy4" parent="." unique_id=516431065 instance=ExtResource("5_f2txt")]
+position = Vector2(-54, 25)
 
-[node name="TestEnemy5" parent="." unique_id=1806066478 instance=ExtResource("5_f2txt")]
-position = Vector2(129, 19)
+[node name="TestEnemy5" parent="." unique_id=162869908 instance=ExtResource("5_f2txt")]
+position = Vector2(-37, -26)
+
+[node name="TestEnemy6" parent="." unique_id=1789122628 instance=ExtResource("5_f2txt")]
+position = Vector2(-37, -9)
+
+[node name="TestEnemy7" parent="." unique_id=47384914 instance=ExtResource("5_f2txt")]
+position = Vector2(-37, 8)
+
+[node name="TestEnemy8" parent="." unique_id=173500765 instance=ExtResource("5_f2txt")]
+position = Vector2(-37, 25)

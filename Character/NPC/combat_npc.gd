@@ -9,10 +9,13 @@ enum State {
 
 @onready var detection_area: Area2D = $DetectionArea
 
-@export var speed = 200
+@export var speed = 100
 @export var attack_range: float = 20.0
 @export var attack_damage: int = 10
 @export var attack_cooldown: float = 0.75
+@export var attack_slot_radius: float = 14.0
+@export var ally_avoidance_radius: float = 28.0
+@export var ally_avoidance_strength: float = 1.35
 
 var state = State.PATROL
 var target: GameCharacter
@@ -44,21 +47,11 @@ func _run_patrol_state() -> void:
 		state = State.MOVE_TO_ENEMY
 		return
 
-	for body in detection_area.get_overlapping_bodies():
-		if body is GameCharacter:
-			var candidate := body as GameCharacter
-			if _is_valid_enemy(candidate):
-				target = candidate
-				_last_known_position = target.position
-				_has_last_known_position = true
-				state = State.MOVE_TO_ENEMY
-				return
-
 
 func _run_move_to_enemy_state() -> void:
 	_update_target_to_closest_enemy()
 	if not _has_valid_target():
-		_move_to_last_known_position_or_patrol()
+		_handle_lost_target()
 		return
 
 	if not _is_target_in_detection_area():
@@ -75,14 +68,14 @@ func _run_move_to_enemy_state() -> void:
 		state = State.FIGHT_ENEMY
 		return
 
-	var dir := (target.position - position).normalized()
-	velocity = dir * speed
+	var attack_slot_position := _get_attack_slot_position(target)
+	_move_towards_with_avoidance(attack_slot_position)
 
 
 func _run_fight_enemy_state() -> void:
 	_update_target_to_closest_enemy()
 	if not _has_valid_target():
-		_move_to_last_known_position_or_patrol()
+		_handle_lost_target()
 		return
 
 	if not _is_target_in_detection_area():
@@ -144,9 +137,18 @@ func _move_to_last_known_position_or_patrol() -> void:
 		_reset_to_patrol()
 		return
 
-	var dir := (_last_known_position - position).normalized()
-	velocity = dir * speed
+	_move_towards_with_avoidance(_last_known_position)
 	state = State.MOVE_TO_ENEMY
+
+
+func _handle_lost_target() -> void:
+	# If the previous target was defeated, do not converge everyone on the death location.
+	if target != null and (not is_instance_valid(target) or not target.is_alive()):
+		_reset_to_patrol()
+		return
+
+	# If the target was only lost from vision/range, continue to last known position.
+	_move_to_last_known_position_or_patrol()
 
 
 func _update_target_to_closest_enemy() -> void:
@@ -184,3 +186,55 @@ func _find_closest_enemy_in_detection_area() -> GameCharacter:
 				closest_distance_sq = candidate_distance_sq
 
 	return closest_enemy
+
+
+func _move_towards_with_avoidance(destination: Vector2) -> void:
+	var desired_dir := (destination - position).normalized()
+	if desired_dir == Vector2.ZERO:
+		velocity = Vector2.ZERO
+		return
+
+	var steer := desired_dir + _get_ally_separation_vector() * ally_avoidance_strength
+	if steer == Vector2.ZERO:
+		velocity = Vector2.ZERO
+		return
+
+	velocity = steer.normalized() * speed
+
+
+func _get_ally_separation_vector() -> Vector2:
+	var separation := Vector2.ZERO
+	var nearby_allies := 0
+	var avoid_radius_sq := ally_avoidance_radius * ally_avoidance_radius
+
+	for body in detection_area.get_overlapping_bodies():
+		if not (body is GameCharacter):
+			continue
+
+		var other := body as GameCharacter
+		if other == self:
+			continue
+		if not other.is_alive():
+			continue
+		if other.get_team() != get_team():
+			continue
+
+		var to_me := position - other.position
+		var dist_sq := to_me.length_squared()
+		if dist_sq <= 0.001 or dist_sq > avoid_radius_sq:
+			continue
+
+		# Stronger push when the ally is closer.
+		separation += to_me.normalized() * (1.0 - (dist_sq / avoid_radius_sq))
+		nearby_allies += 1
+
+	if nearby_allies == 0:
+		return Vector2.ZERO
+
+	return separation / float(nearby_allies)
+
+
+func _get_attack_slot_position(enemy: GameCharacter) -> Vector2:
+	var slot_angle := float(get_instance_id() % 360) * PI / 180.0
+	var offset := Vector2(cos(slot_angle), sin(slot_angle)) * attack_slot_radius
+	return enemy.position + offset
